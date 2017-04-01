@@ -16,7 +16,7 @@ exports.sayNumber = (req, res) => {
   function mainIntent (assistant) {
     console.log('mainIntent');
     let inputPrompt = assistant.buildInputPrompt(true, '<speak>Hi! <break time="1"/> ' +
-          'Please tell me something you want to analyze!</speak>',
+          'Talk to me!</speak>',
           ['I didn\'t quite catch that', 'Please repeat yourself', 'I\'m sorry, what did you say?']);
     assistant.ask(inputPrompt);
   }
@@ -29,7 +29,7 @@ exports.sayNumber = (req, res) => {
       let inputSpeech = assistant.getRawInput();
       let inputPrompt = assistant.buildInputPrompt(
         true,
-        '<speak>Analyzing speech with NLP...</speak>',
+        '<speak>What\'s next?</speak>',
         ['I didn\'t quite catch that', 'Please repeat yourself', 'I\'m sorry, what did you say?']);
 
       socket.send(inputSpeech);
