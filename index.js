@@ -1,8 +1,14 @@
+const app = require('express')();
+const http = require('http').Server(app);
+const io = require('socket.io-client');
+
 'use strict';
 
 process.env.DEBUG = 'actions-on-google:*';
 
+const voiceChannel = 'voice';
 const ActionsSdkAssistant = require('actions-on-google').ActionsSdkAssistant;
+const socket = io('http://536b56e1.ngrok.io');
 
 exports.sayNumber = (req, res) => {
   const assistant = new ActionsSdkAssistant({request: req, response: res});
@@ -10,8 +16,8 @@ exports.sayNumber = (req, res) => {
   function mainIntent (assistant) {
     console.log('mainIntent');
     let inputPrompt = assistant.buildInputPrompt(true, '<speak>Hi! <break time="1"/> ' +
-          'Fuck David Zhou!</speak>',
-          ['I didn\'t hear a number', 'If you\'re still there, what\'s the number?', 'What is the number?']);
+          'Please tell me something you want to analyze!</speak>',
+          ['I didn\'t quite catch that', 'Please repeat yourself', 'I\'m sorry, what did you say?']);
     assistant.ask(inputPrompt);
   }
 
@@ -20,9 +26,13 @@ exports.sayNumber = (req, res) => {
     if (assistant.getRawInput() === 'bye') {
       assistant.tell('Goodbye!');
     } else {
-      let inputPrompt = assistant.buildInputPrompt(true, '<speak>You said, <say-as interpret-as="ordinal">' +
-        assistant.getRawInput() + '</say-as></speak>',
-          ['I didn\'t hear a number', 'If you\'re still there, what\'s the number?', 'What is the number?']);
+      let inputSpeech = assistant.getRawInput();
+      let inputPrompt = assistant.buildInputPrompt(
+        true,
+        '<speak>Analyzing speech with NLP...</speak>',
+        ['I didn\'t quite catch that', 'Please repeat yourself', 'I\'m sorry, what did you say?']);
+
+      socket.send(inputSpeech);
       assistant.ask(inputPrompt);
     }
   }
