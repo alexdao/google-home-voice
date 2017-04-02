@@ -8,7 +8,7 @@ process.env.DEBUG = 'actions-on-google:*';
 
 const voiceChannel = 'voice';
 const ActionsSdkAssistant = require('actions-on-google').ActionsSdkAssistant;
-const socket = io('http://536b56e1.ngrok.io');
+const socket = io('http://30cb9968.ngrok.io');
 
 exports.sayNumber = (req, res) => {
   const assistant = new ActionsSdkAssistant({request: req, response: res});
